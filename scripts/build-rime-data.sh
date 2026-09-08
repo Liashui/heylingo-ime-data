@@ -50,8 +50,8 @@ cp "${ROOT}/config/heylingo_english.schema.yaml" "${SHARED}/heylingo_english.sch
 mkdir -p "${SHARED}/opencc"
 cp -R /usr/share/opencc/. "${SHARED}/opencc/"
 
-"${RIME_DEPLOYER}" --compile bopomofo_tw.schema.yaml "${USER_DATA}" "${SHARED}" "${STAGING}"
-"${RIME_DEPLOYER}" --compile heylingo_english.schema.yaml "${USER_DATA}" "${SHARED}" "${STAGING}"
+"${RIME_DEPLOYER}" --compile "${SHARED}/bopomofo_tw.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
+"${RIME_DEPLOYER}" --compile "${SHARED}/heylingo_english.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
 
 copy_data() {
   local from="$1"
