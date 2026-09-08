@@ -52,6 +52,11 @@ cp -R /usr/share/opencc/. "${SHARED}/opencc/"
 "${RIME_DEPLOYER}" --compile "${SHARED}/bopomofo_tw.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
 "${RIME_DEPLOYER}" --compile "${SHARED}/heylingo_english.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
 
+# rime_deployer writes generated schemas and tables to its staging directory.
+# Release clients expect the standard shared-data `build/` layout.
+mkdir -p "${SHARED}/build"
+rsync -a "${STAGING}/" "${SHARED}/build/"
+
 copy_data() {
   local from="$1"
   local to="$2"
