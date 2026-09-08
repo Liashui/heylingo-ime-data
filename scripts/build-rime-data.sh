@@ -12,7 +12,7 @@ SHARED="${WORK}/shared"
 USER_DATA="${WORK}/user"
 STAGING="${WORK}/staging"
 DIST="${ROOT}/dist"
-RIME_DEPLOYER="${WORK}/librime-build/tools/rime_deployer"
+RIME_DEPLOYER="${WORK}/librime-build/bin/rime_deployer"
 
 rm -rf "${WORK}" "${DIST}"
 mkdir -p "${SOURCE}" "${SHARED}" "${USER_DATA}" "${STAGING}" "${DIST}"
