@@ -32,7 +32,7 @@ clone_master rime-essay https://github.com/rime/rime-essay.git
 clone_master rime-english https://github.com/sdadonkey/rime-english.git
 
 cmake -S "${SOURCE}/librime" -B "${WORK}/librime-build" \
-  -DBUILD_SHARED_LIBS=OFF -DBUILD_TEST=OFF -DBUILD_MERGED_PLUGINS=OFF
+  -DBUILD_SHARED_LIBS=ON -DBUILD_TEST=OFF -DBUILD_MERGED_PLUGINS=OFF
 cmake --build "${WORK}/librime-build" --target rime_deployer --parallel 2
 
 # Shared presets and all source files needed by the compiled schemas.  Do not
