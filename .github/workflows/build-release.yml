@@ -1,0 +1,44 @@
+name: Build and publish IME data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install compiler and librime dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake git jq pkg-config rsync unzip zip \
+            libboost-regex-dev libgoogle-glog-dev libleveldb-dev \
+            libmarisa-dev libopencc-dev libyaml-cpp-dev
+
+      - name: Build Rime data packages
+        run: bash scripts/build-rime-data.sh
+
+      - name: Validate artifacts
+        run: |
+          jq -e '.format == 1 and (.assets | length == 3)' dist/manifest.json
+          unzip -t dist/heylingo-rime-common.zip >/dev/null
+          unzip -t dist/heylingo-rime-en.zip >/dev/null
+          unzip -t dist/heylingo-rime-zh-Hant.zip >/dev/null
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="ime-data-$(date -u +%Y%m%d)-${GITHUB_RUN_NUMBER}"
+          gh release create "${tag}" dist/*.zip dist/manifest.json \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "IME data ${tag}" \
+            --notes "Automated Rime data build. See manifest.json for exact upstream commits and SHA-256 hashes."

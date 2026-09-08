@@ -1,0 +1,57 @@
+# Rime schema
+# English prefix-completion input.  This uses only librime's built-in processors
+# and table translator so the iOS integration does not need librime-lua.
+schema:
+  schema_id: heylingo_english
+  name: HeyLingo English
+  version: "1.0"
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [English, English]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator
+  filters:
+    - uniquifier
+
+speller:
+  alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'-"
+  delimiter: ""
+
+translator:
+  dictionary: english
+  enable_sentence: false
+  enable_encoder: false
+  enable_user_dict: true
+  enable_completion: true
+  initial_quality: 1.0
+
+key_binder:
+  import_preset: default
+
+punctuator:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+
+menu:
+  page_size: 9
