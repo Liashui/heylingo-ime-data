@@ -42,7 +42,6 @@ rsync -a --exclude='.git' "${SOURCE}/rime-bopomofo/" "${SHARED}/"
 rsync -a --exclude='.git' "${SOURCE}/rime-terra-pinyin/" "${SHARED}/"
 rsync -a --exclude='.git' "${SOURCE}/rime-essay/" "${SHARED}/"
 cp "${SOURCE}/rime-english/english.dict.yaml" "${SHARED}/english.dict.yaml"
-cp "${ROOT}/config/default.yaml" "${SHARED}/default.yaml"
 cp "${ROOT}/config/heylingo_english.schema.yaml" "${SHARED}/heylingo_english.schema.yaml"
 
 # OpenCC config files refer to sibling dictionary files.  Keep their directory
@@ -86,7 +85,6 @@ COMMON_PACKAGE="${WORK}/package-common"
 copy_data "${SOURCE}/rime-prelude" "${COMMON_PACKAGE}"
 mkdir -p "${COMMON_PACKAGE}/opencc"
 cp -R "${SHARED}/opencc/." "${COMMON_PACKAGE}/opencc/"
-cp "${ROOT}/config/default.yaml" "${COMMON_PACKAGE}/default.yaml"
 (cd "${COMMON_PACKAGE}" && zip -qr "${DIST}/heylingo-rime-common.zip" .)
 
 make_archive en heylingo_english.schema.yaml english.dict.yaml build/heylingo_english.*

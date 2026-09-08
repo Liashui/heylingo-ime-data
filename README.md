@@ -10,8 +10,7 @@ the resulting tables as GitHub Release assets.
 
 Each release contains these additive packages:
 
-- `heylingo-rime-common.zip` — Rime presets, OpenCC conversion data, and the
-  shared schema registry.
+- `heylingo-rime-common.zip` — Rime presets and OpenCC conversion data.
 - `heylingo-rime-en.zip` — English completion schema and dictionary.
 - `heylingo-rime-zh-Hant.zip` — Bopomofo / Taiwan Traditional Chinese schema,
   dictionary, and compiled tables.

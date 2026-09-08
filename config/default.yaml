@@ -1,4 +1,0 @@
-# Shared schema registry installed with every HeyLingo Rime data release.
-schema_list:
-  - schema: heylingo_english
-  - schema: bopomofo_tw
