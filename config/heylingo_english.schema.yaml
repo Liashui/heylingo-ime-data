@@ -37,7 +37,7 @@ speller:
   delimiter: ""
 
 translator:
-  dictionary: english
+  dictionary: heylingo_english
   enable_sentence: false
   enable_encoder: false
   enable_user_dict: true

@@ -41,7 +41,30 @@ rsync -a --exclude='.git' "${SOURCE}/rime-prelude/" "${SHARED}/"
 rsync -a --exclude='.git' "${SOURCE}/rime-bopomofo/" "${SHARED}/"
 rsync -a --exclude='.git' "${SOURCE}/rime-terra-pinyin/" "${SHARED}/"
 rsync -a --exclude='.git' "${SOURCE}/rime-essay/" "${SHARED}/"
-cp "${SOURCE}/rime-english/english.dict.yaml" "${SHARED}/english.dict.yaml"
+# rime-english stores a Chinese dictionary definition in its `text` column.
+# That is useful for a dictionary lookup UI, but wrong for a keyboard
+# candidate: typing `hell` must offer `hello`, not its Chinese definition.
+# Build a compact completion dictionary whose displayed text is the word.
+cat > "${SHARED}/heylingo_english.dict.yaml" <<'EOF'
+# Rime dictionary: HeyLingo English candidates
+---
+name: heylingo_english
+version: "1.0"
+sort: by_weight
+use_preset_vocabulary: false
+columns:
+  - text
+  - code
+  - weight
+...
+EOF
+awk 'BEGIN { FS="\t" } /^\.\.\./ { data = 1; next } !data || /^#/ || NF < 1 { next } {
+  word = $1
+  gsub(/\r/, "", word)
+  if (word ~ /^[A-Za-z][A-Za-z.'\''-]*$/) {
+    print word "\t" tolower(word) "\t1"
+  }
+}' "${SOURCE}/rime-english/english.dict.yaml" >> "${SHARED}/heylingo_english.dict.yaml"
 cp "${ROOT}/config/heylingo_english.schema.yaml" "${SHARED}/heylingo_english.schema.yaml"
 
 # OpenCC config files refer to sibling dictionary files.  Keep their directory
@@ -96,7 +119,7 @@ cp -R "${SHARED}/opencc/." "${COMMON_PACKAGE}/opencc/"
 # prism take their names from `translator.dictionary` (`english`).  Both sets
 # are required at runtime: without the latter librime accepts keystrokes but
 # has no candidates to return.
-make_archive en heylingo_english.schema.yaml english.dict.yaml build/heylingo_english.* build/english.*
+make_archive en heylingo_english.schema.yaml heylingo_english.dict.yaml build/heylingo_english.*
 ZH_HANT_PACKAGE="${WORK}/package-zh-Hant"
 copy_data "${SOURCE}/rime-bopomofo" "${ZH_HANT_PACKAGE}"
 copy_data "${SOURCE}/rime-terra-pinyin" "${ZH_HANT_PACKAGE}"
