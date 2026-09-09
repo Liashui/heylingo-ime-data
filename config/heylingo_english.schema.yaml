@@ -13,7 +13,6 @@ switches:
 
 engine:
   processors:
-    - express_editor
     - ascii_composer
     - recognizer
     - key_binder
@@ -21,6 +20,7 @@ engine:
     - punctuator
     - selector
     - navigator
+    - express_editor
   segmentors:
     - ascii_segmentor
     - matcher
