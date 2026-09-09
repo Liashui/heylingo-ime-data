@@ -13,6 +13,7 @@ switches:
 
 engine:
   processors:
+    - express_editor
     - ascii_composer
     - recognizer
     - key_binder
