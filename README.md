@@ -1,7 +1,7 @@
 # HeyLingo IME data
 
-This repository produces **data-only** Rime packages for HeyLingo's English and
-Traditional Chinese keyboards.  It intentionally does not distribute executable
+This repository produces **data-only** Rime packages for HeyLingo's English,
+Japanese, and Traditional Chinese keyboards.  It intentionally does not distribute executable
 code: the iOS app embeds the reviewed `librime` binary, while this repository
 downloads upstream source data, compiles it with `rime_deployer`, and publishes
 the resulting tables as GitHub Release assets.
@@ -12,6 +12,8 @@ Each release contains these additive packages:
 
 - `heylingo-rime-common.zip` — Rime presets and OpenCC conversion data.
 - `heylingo-rime-en.zip` — English completion schema and dictionary.
+- `heylingo-rime-ja.zip` — Japanese Kana-to-Kanji conversion schema,
+  dictionaries, and compiled tables.
 - `heylingo-rime-zh-Hant.zip` — Bopomofo / Taiwan Traditional Chinese schema,
   dictionary, and compiled tables.
 - `manifest.json` — release version, source commits, asset URLs, sizes, and
@@ -35,6 +37,8 @@ at build time and records the exact commits in `manifest.json`:
 - `sdadonkey/rime-english` — English dictionary source only.  HeyLingo uses its
   own small standard-Rime schema in `config/` so the first release has no Lua
   runtime dependency.
+- `gkovacs/rime-japanese` — Japanese dictionary source. HeyLingo compiles it
+  with a reduced touch-keyboard schema that has no unrelated reverse lookups.
 
 ## Publishing
 

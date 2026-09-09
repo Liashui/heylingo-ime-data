@@ -30,6 +30,7 @@ clone_master rime-bopomofo https://github.com/rime/rime-bopomofo.git
 clone_master rime-terra-pinyin https://github.com/rime/rime-terra-pinyin.git
 clone_master rime-essay https://github.com/rime/rime-essay.git
 clone_master rime-english https://github.com/sdadonkey/rime-english.git
+clone_master rime-japanese https://github.com/gkovacs/rime-japanese.git
 
 cmake -S "${SOURCE}/librime" -B "${WORK}/librime-build" \
   -DBUILD_SHARED_LIBS=ON -DBUILD_TEST=OFF -DBUILD_MERGED_PLUGINS=OFF
@@ -66,6 +67,8 @@ awk 'BEGIN { FS="\t" } /^\.\.\./ { data = 1; next } !data || /^#/ || NF < 1 { ne
   }
 }' "${SOURCE}/rime-english/english.dict.yaml" >> "${SHARED}/heylingo_english.dict.yaml"
 cp "${ROOT}/config/heylingo_english.schema.yaml" "${SHARED}/heylingo_english.schema.yaml"
+cp -R "${SOURCE}/rime-japanese"/*.dict.yaml "${SHARED}/"
+cp "${ROOT}/config/heylingo_japanese.schema.yaml" "${SHARED}/heylingo_japanese.schema.yaml"
 
 # OpenCC config files refer to sibling dictionary files.  Keep their directory
 # layout intact so librime can resolve traditional-character conversions.
@@ -74,6 +77,7 @@ cp -R /usr/share/opencc/. "${SHARED}/opencc/"
 
 "${RIME_DEPLOYER}" --compile "${SHARED}/bopomofo_tw.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
 "${RIME_DEPLOYER}" --compile "${SHARED}/heylingo_english.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
+"${RIME_DEPLOYER}" --compile "${SHARED}/heylingo_japanese.schema.yaml" "${USER_DATA}" "${SHARED}" "${STAGING}"
 
 # rime_deployer writes generated schemas and tables to its staging directory.
 # Release clients expect the standard shared-data `build/` layout.
@@ -120,6 +124,7 @@ cp -R "${SHARED}/opencc/." "${COMMON_PACKAGE}/opencc/"
 # are required at runtime: without the latter librime accepts keystrokes but
 # has no candidates to return.
 make_archive en heylingo_english.schema.yaml heylingo_english.dict.yaml build/heylingo_english.*
+make_archive ja heylingo_japanese.schema.yaml japanese*.dict.yaml build/heylingo_japanese.schema.yaml build/japanese.table.bin build/japanese.prism.bin
 ZH_HANT_PACKAGE="${WORK}/package-zh-Hant"
 copy_data "${SOURCE}/rime-bopomofo" "${ZH_HANT_PACKAGE}"
 copy_data "${SOURCE}/rime-terra-pinyin" "${ZH_HANT_PACKAGE}"
@@ -136,7 +141,8 @@ jq -n \
   --arg terra_pinyin "$(<"${WORK}/rime-terra-pinyin.commit")" \
   --arg essay "$(<"${WORK}/rime-essay.commit")" \
   --arg english "$(<"${WORK}/rime-english.commit")" \
-  '{format: 1, generatedAt: $generated_at, sources: {librime: $librime, rimePrelude: $prelude, rimeBopomofo: $bopomofo, rimeTerraPinyin: $terra_pinyin, rimeEssay: $essay, rimeEnglish: $english}, assets: []}' \
+  --arg japanese "$(<"${WORK}/rime-japanese.commit")" \
+  '{format: 1, generatedAt: $generated_at, sources: {librime: $librime, rimePrelude: $prelude, rimeBopomofo: $bopomofo, rimeTerraPinyin: $terra_pinyin, rimeEssay: $essay, rimeEnglish: $english, rimeJapanese: $japanese}, assets: []}' \
   > "${DIST}/manifest.json"
 
 for archive in "${DIST}"/*.zip; do

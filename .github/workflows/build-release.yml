@@ -28,9 +28,10 @@ jobs:
 
       - name: Validate artifacts
         run: |
-          jq -e '.format == 1 and (.assets | length == 3)' dist/manifest.json
+          jq -e '.format == 1 and (.assets | length == 4)' dist/manifest.json
           unzip -t dist/heylingo-rime-common.zip >/dev/null
           unzip -t dist/heylingo-rime-en.zip >/dev/null
+          unzip -t dist/heylingo-rime-ja.zip >/dev/null
           unzip -t dist/heylingo-rime-zh-Hant.zip >/dev/null
           unzip -Z1 dist/heylingo-rime-en.zip | grep -qx 'build/heylingo_english.table.bin'
           unzip -Z1 dist/heylingo-rime-en.zip | grep -qx 'build/heylingo_english.prism.bin'

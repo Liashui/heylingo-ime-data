@@ -1,0 +1,51 @@
+# Rime schema
+# Japanese romaji-to-kana/kanji conversion for HeyLingo's touch Kana layout.
+schema:
+  schema_id: heylingo_japanese
+  name: HeyLingo Japanese
+  version: "1.0"
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+  filters:
+    - uniquifier
+
+speller:
+  alphabet: "abcdefghijklmnopqrstuvwxyz-"
+  delimiter: ""
+
+translator:
+  dictionary: japanese
+  enable_sentence: true
+  enable_user_dict: true
+  enable_completion: false
+  spelling_hints: 5
+
+key_binder:
+  import_preset: default
+
+punctuator:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+
+menu:
+  page_size: 9
