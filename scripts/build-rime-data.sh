@@ -92,7 +92,11 @@ mkdir -p "${COMMON_PACKAGE}/opencc"
 cp -R "${SHARED}/opencc/." "${COMMON_PACKAGE}/opencc/"
 (cd "${COMMON_PACKAGE}" && zip -qr "${DIST}/heylingo-rime-common.zip" .)
 
-make_archive en heylingo_english.schema.yaml english.dict.yaml build/heylingo_english.*
+# The schema itself is named `heylingo_english`, while the compiled table and
+# prism take their names from `translator.dictionary` (`english`).  Both sets
+# are required at runtime: without the latter librime accepts keystrokes but
+# has no candidates to return.
+make_archive en heylingo_english.schema.yaml english.dict.yaml build/heylingo_english.* build/english.*
 ZH_HANT_PACKAGE="${WORK}/package-zh-Hant"
 copy_data "${SOURCE}/rime-bopomofo" "${ZH_HANT_PACKAGE}"
 copy_data "${SOURCE}/rime-terra-pinyin" "${ZH_HANT_PACKAGE}"

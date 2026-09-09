@@ -32,6 +32,8 @@ jobs:
           unzip -t dist/heylingo-rime-common.zip >/dev/null
           unzip -t dist/heylingo-rime-en.zip >/dev/null
           unzip -t dist/heylingo-rime-zh-Hant.zip >/dev/null
+          unzip -Z1 dist/heylingo-rime-en.zip | grep -qx 'build/english.table.bin'
+          unzip -Z1 dist/heylingo-rime-en.zip | grep -qx 'build/english.prism.bin'
 
       - name: Publish GitHub release
         env:
